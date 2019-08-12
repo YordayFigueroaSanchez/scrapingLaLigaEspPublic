@@ -49,19 +49,83 @@ public class ScrapingLaLigaEspPublic {
 			
 			System.out.println(elementos.size());
 			for (Element elem : elementos) {
+				// jugador
+				org.w3c.dom.Element jugador = doc.createElement("jugador");
+				rootElement.appendChild(jugador);
+				
 				Elements elemntTD = elem.select("td");
-				String titulo = elemntTD.get(0).select("div.info").get(0).select("h3").get(0).select("a").get(0).text();
+				
+				String urlJugador = elemntTD.get(0).select("div.info").get(0).select("h3").get(0).select("a").attr("href");
+				Attr attrJugadorUrl = doc.createAttribute("url");
+				attrJugadorUrl.setValue(urlJugador);
+				jugador.setAttributeNode(attrJugadorUrl);
+				
+				String urlJugadorTeam = elemntTD.get(0).select("a").get(0).attr("href");
+				Attr attrJugadorTeamUrl = doc.createAttribute("urlteam");
+				attrJugadorTeamUrl.setValue(urlJugadorTeam);
+				jugador.setAttributeNode(attrJugadorTeamUrl);
+				
+				String nombreJugador = elemntTD.get(0).select("div.info").get(0).select("h3").get(0).select("a").get(0).text();
+				Attr attrNombre = doc.createAttribute("nombre");
+				attrNombre.setValue(nombreJugador);
+				jugador.setAttributeNode(attrNombre);
+				
+				String puntosTotal = elemntTD.get(1).text();
+				Attr attrPuntosTotal = doc.createAttribute("puntos");
+				attrPuntosTotal.setValue(puntosTotal);
+				jugador.setAttributeNode(attrPuntosTotal);
+				
+				String puntosTotalMedia = elemntTD.get(2).text();
+				Attr attrPuntosTotalMedia = doc.createAttribute("media");
+				attrPuntosTotalMedia.setValue(puntosTotalMedia);
+				jugador.setAttributeNode(attrPuntosTotalMedia);
+				
+				String puntosLocal = elemntTD.get(3).text();
+				Attr attrPuntosLocal = doc.createAttribute("local");
+				attrPuntosLocal.setValue(puntosLocal);
+				jugador.setAttributeNode(attrPuntosLocal);
+				
+				String puntosLocalMedia = elemntTD.get(4).text();
+				Attr attrPuntosLocalMedia = doc.createAttribute("medialocal");
+				attrPuntosLocalMedia.setValue(puntosLocalMedia);
+				jugador.setAttributeNode(attrPuntosLocalMedia);
+				
+				String puntosVisita = elemntTD.get(5).text();
+				Attr attrPuntosVisita = doc.createAttribute("visita");
+				attrPuntosVisita.setValue(puntosVisita);
+				jugador.setAttributeNode(attrPuntosVisita);
+				
+				String puntosVisitaMedia = elemntTD.get(6).text();
+				Attr attrPuntosVisitaMedia = doc.createAttribute("mediavisita");
+				attrPuntosVisitaMedia.setValue(puntosVisitaMedia);
+				jugador.setAttributeNode(attrPuntosVisitaMedia);
+				
+				String puntosRacha = elemntTD.get(7).text();
+				Attr attrPuntosRacha = doc.createAttribute("racha");
+				attrPuntosRacha.setValue(puntosRacha);
+				jugador.setAttributeNode(attrPuntosRacha);
+				
+				String precio = elemntTD.get(8).attr("data-value");
+				Attr attrPrecio = doc.createAttribute("precio");
+				attrPrecio.setValue(precio);
+				jugador.setAttributeNode(attrPrecio);
+				
+				String posicion = elemntTD.get(9).text();
+				Attr attrPosicion = doc.createAttribute("posicion");
+				attrPosicion.setValue(posicion);
+				jugador.setAttributeNode(attrPosicion);
+				
 //				String autor = elem.getElementsByClass("currency-name-container").text();
 //				String price = elem.getElementsByClass("price").text();
 //				System.out.println(titulo + ":" + autor + ":" + price);
 
-				// moneda
-				org.w3c.dom.Element empleado = doc.createElement("jugador");
-				rootElement.appendChild(empleado);
+				
 				// atributo del elemento empleado
-				Attr attr = doc.createAttribute("id");
-				attr.setValue(titulo);
-				empleado.setAttributeNode(attr);
+				
+				
+				
+				
+				
 
 				// nombre
 //				org.w3c.dom.Element nombre = doc.createElement("nombre");
@@ -104,9 +168,17 @@ public class ScrapingLaLigaEspPublic {
 
 	/**
 	 * Con esta método compruebo el Status code de la respuesta que recibo al hacer
-	 * la petición EJM: 200 OK 300 Multiple Choices 301 Moved Permanently 305 Use
-	 * Proxy 400 Bad Request 403 Forbidden 404 Not Found 500 Internal Server Error
-	 * 502 Bad Gateway 503 Service Unavailable
+	 * la petición EJM: 
+	 * 200 OK 
+	 * 300 Multiple Choices 
+	 * 301 Moved Permanently 
+	 * 305 Use Proxy 
+	 * 400 Bad Request 
+	 * 403 Forbidden 
+	 * 404 Not Found 
+	 * 500 Internal Server Error
+	 * 502 Bad Gateway 
+	 * 503 Service Unavailable
 	 * 
 	 * @param url
 	 * @return Status Code
