@@ -30,14 +30,14 @@ public class ScrapingLaLigaEspPublic {
 	public static void main(String[] args) throws ParserConfigurationException, TransformerConfigurationException {
 		// TODO Auto-generated method stub
 
-		String file = "prueba.html";
+		String file = "jugadores2.html";
 
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
 		// elemento raiz
 		org.w3c.dom.Document doc = docBuilder.newDocument();
-		org.w3c.dom.Element rootElement = doc.createElement("monedas");
+		org.w3c.dom.Element rootElement = doc.createElement("jugadores");
 		doc.appendChild(rootElement);
 
 		if (getStatusFile(file) == 1) {
@@ -45,17 +45,18 @@ public class ScrapingLaLigaEspPublic {
 			//Elements elementos = documento.select("a[href]");
 			//Elements elementos = documento.select("table.mlb-scores"); //pizarra
 			//Elements elementos = documento.select("div.pure-u-1 > p > a"); //fecha
-			Elements elementos = documento.select("table.pure-table.pure-table-striped.mlb-box.mlb-box-bat.mobile"); //fecha
+			Elements elementos = documento.select("tr.alt-row"); //fecha
 			
 			System.out.println(elementos.size());
 			for (Element elem : elementos) {
-				String titulo = elem.text();
+				Elements elemntTD = elem.select("td");
+				String titulo = elemntTD.get(0).select("div.info").get(0).select("h3").get(0).select("a").get(0).text();
 //				String autor = elem.getElementsByClass("currency-name-container").text();
 //				String price = elem.getElementsByClass("price").text();
 //				System.out.println(titulo + ":" + autor + ":" + price);
 
 				// moneda
-				org.w3c.dom.Element empleado = doc.createElement("moneda");
+				org.w3c.dom.Element empleado = doc.createElement("jugador");
 				rootElement.appendChild(empleado);
 				// atributo del elemento empleado
 				Attr attr = doc.createAttribute("id");
@@ -85,7 +86,8 @@ public class ScrapingLaLigaEspPublic {
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult result = new StreamResult(new File(nombreFichero + ".xml"));
+		String ruta = "dataXML\\";
+		StreamResult result = new StreamResult(new File(ruta,nombreFichero + ".xml"));
 
 		// StreamResult result = new StreamResult(new File("archivo.xml"));
 		// Si se quiere mostrar por la consola...
@@ -148,7 +150,7 @@ public class ScrapingLaLigaEspPublic {
 	
 	public static Document getHtmlFileToDocument(String file) {
 
-		File input = new File("juegos/"+file);
+		File input = new File("data/"+file);
 		Document doc = null;
 		try {
 			doc = Jsoup.parse(input, "UTF-8", "http://example.com/");
